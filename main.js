@@ -1,23 +1,22 @@
-if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
+Posts = new Mongo.Collection("posts");
 
-  Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
-    }
-  });
-
-  Template.hello.events({
-    'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
+if (Meteor.isServer){
+  //code here will run on the backend
+  Meteor.methods({
+    addPost: function(title, story, author, date) {
+      Posts.insert({
+        title: title,
+        story: story,
+        author: author,
+        date: date
+      });
+    },
+    deletePost: function(id) {
+      Posts.remove(id);
     }
   });
 }
 
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
+if (Meteor.isClient){
+  //code here will run on clientside
 }
